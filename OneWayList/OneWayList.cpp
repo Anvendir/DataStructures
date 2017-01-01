@@ -1,4 +1,5 @@
 #include "OneWayList.h"
+#include <iostream>
 
 OneWayList::Node::Node()
 	: m_element(0), m_nextElement(nullptr)
@@ -21,46 +22,73 @@ OneWayList::~OneWayList()
 {
 }
 
+void OneWayList::printList() const
+{
+	for (auto l_tmp = m_head; l_tmp; l_tmp = l_tmp->m_nextElement)
+	{
+		std::cout << l_tmp->m_element;
+		if (l_tmp->m_nextElement)
+			std::cout << ", ";
+	}
+}
+
 int OneWayList::getListSize()
 {
 	if (!m_head)
 		return 0;
 
 	auto l_counter = 0;
-	auto l_tmp = m_head;
-	
-	while (l_tmp)
-	{
+	for (auto l_tmp = m_head; l_tmp; l_tmp = l_tmp->m_nextElement)
 		l_counter++;
-		l_tmp = l_tmp->m_nextElement;
-	}
+
 	return l_counter;
 }
 
 void OneWayList::addToTail(int p_element)
 {
+	auto l_temp = new Node();
+	l_temp->m_element = p_element;
+	l_temp->m_nextElement = nullptr;
+
+	if (!m_head)
+		m_head = l_temp;
+	else if (!m_head->m_nextElement)
+		m_head->m_nextElement = l_temp;
+	else
+		m_tail->m_nextElement = l_temp;
+
+	m_tail = l_temp;
+}
+
+void OneWayList::addToHead(int p_element)
+{
+	auto l_temp = new Node();
+	l_temp->m_element = p_element;
+	
 	if (!m_head)
 	{
-		m_head = new Node();
-		m_head->m_element = p_element;
-		m_head->m_nextElement = nullptr;
-		m_tail = m_head;
+		m_head = m_tail = l_temp;
+		l_temp->m_nextElement = nullptr;
 	}
 	else
 	{
-		auto l_temp = new Node();
-		l_temp->m_element = p_element;
-		l_temp->m_nextElement = nullptr;
-		
-		if (m_head->m_nextElement == nullptr)
+		l_temp->m_nextElement = m_head;
+		m_head = l_temp;
+	}
+}
+
+int OneWayList::getElementFromTail()
+{
+	auto l_elementFromTail = m_tail->m_element;
+
+	for (auto l_element = m_head; l_element; l_element = l_element->m_nextElement)
+	{
+		if (l_element->m_nextElement == m_tail)
 		{
-			m_head->m_nextElement = l_temp;
-			m_tail = l_temp;
-		}
-		else
-		{
-			m_tail->m_nextElement = l_temp;
-			m_tail = l_temp;
+			m_tail = l_element;
+			m_tail->m_nextElement = nullptr;
+			break;
 		}
 	}
+	return l_elementFromTail;
 }

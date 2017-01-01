@@ -2,6 +2,8 @@
 
 #include <vector>
 
+class Node;
+
 class OneWayList
 {
 public:
@@ -9,13 +11,17 @@ public:
 	virtual ~OneWayList();
 
 	int getListSize();
+	void printList() const;
 	void addToTail(int p_element);
+	void addToHead(int p_element);
+	int getElementFromTail();
 
 private:
 	struct Node
 	{
 		Node();
 		Node(int p_element, Node* p_nextElement = nullptr);
+
 		int m_element;
 		Node* m_nextElement = nullptr;
 	};
