@@ -99,3 +99,24 @@ int OneWayList::getElementFromHead()
 	m_head = m_head->m_nextElement;
 	return l_headElement;
 }
+
+int OneWayList::getElement(int p_elementIndex)
+{
+	if (p_elementIndex >= getListSize())
+		return getElementFromTail();
+
+	if (p_elementIndex == 0)
+		return getElementFromHead();
+
+	auto* l_temp = m_head;
+	for (auto l_counter = 0; l_counter < p_elementIndex; l_temp = l_temp->m_nextElement, l_counter++);
+
+	auto l_requesteElement = l_temp->m_element;
+	auto l_nextElement = l_temp->m_nextElement;
+
+	l_temp = m_head;
+	for (auto l_counter = 0; l_counter < p_elementIndex-1; l_temp = l_temp->m_nextElement, l_counter++);
+	l_temp->m_nextElement = l_nextElement;
+
+	return l_requesteElement;
+}

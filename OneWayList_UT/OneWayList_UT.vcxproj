@@ -128,6 +128,9 @@
       <Project>{3f0cb099-b6bf-4d14-b8b4-8c0704d8e65d}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OneWayListTestSuite.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -4,7 +4,37 @@
 
 struct OneWayListTestSuite : public ::testing::Test
 {
+	void addFewElementsToList()
+	{
+		sut.addToHead(34);
+		sut.addToHead(58);
+		sut.addToHead(15);
+		sut.addToHead(1);
+		sut.addToHead(0);
+	}
+
+	void expectListContainsAllAddedElements()
+	{
+		testing::internal::CaptureStdout();
+		sut.printList();
+
+		m_actualOutput = testing::internal::GetCapturedStdout();
+		EXPECT_STREQ(m_expectedOutput.c_str(), m_actualOutput.c_str());
+	}
+
+	void checkIfListContainsExepctedElements()
+	{
+		testing::internal::CaptureStdout();
+		sut.printList();
+
+		m_actualOutput = testing::internal::GetCapturedStdout();
+		EXPECT_STREQ(m_expectedOutput.c_str(), m_actualOutput.c_str());
+	}
+
 	OneWayList sut;
+	std::string m_expectedOutput = "0, 1, 15, 58, 34";
+	std::string m_actualOutput = "";
+
 };
 
 TEST_F(OneWayListTestSuite, getListSizeWillReturnZeroForEmptyList)
@@ -20,16 +50,14 @@ TEST_F(OneWayListTestSuite, getListSizeWillReturnOneForOneElementList)
 
 TEST_F(OneWayListTestSuite, getListSizeWillReturnFourForForElementList)
 {
-	sut.addToTail(1);
-	sut.addToTail(5);
-	sut.addToTail(3);
-	sut.addToTail(82);
-	EXPECT_EQ(4, sut.getListSize());
+	addFewElementsToList();
+	EXPECT_EQ(5, sut.getListSize());
 }
 
 TEST_F(OneWayListTestSuite, printListTest)
 {
-	std::string l_expectedOutput = "1, 5, 3, 82";
+	m_expectedOutput = "0, 1, 5, 3, 82";
+	sut.addToTail(0);
 	sut.addToTail(1);
 	sut.addToTail(5);
 	sut.addToTail(3);
@@ -39,24 +67,24 @@ TEST_F(OneWayListTestSuite, printListTest)
 	sut.printList();
 
 	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	EXPECT_STREQ(m_expectedOutput.c_str(), l_actualOutput.c_str());
 }
 
 TEST_F(OneWayListTestSuite, addToTailTestOneElement)
 {
-	std::string l_expectedOutput = "34";
+	m_expectedOutput = "34";
 	sut.addToTail(34);
 
 	testing::internal::CaptureStdout();
 	sut.printList();
 
 	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	EXPECT_STREQ(m_expectedOutput.c_str(), l_actualOutput.c_str());
 }
 
 TEST_F(OneWayListTestSuite, addToTailTestFiveElements)
 {
-	std::string l_expectedOutput = "34, 1092, 22, 2, 2";
+	m_expectedOutput = "34, 1092, 22, 2, 2";
 	sut.addToTail(34);
 	sut.addToTail(1092);
 	sut.addToTail(22);
@@ -67,90 +95,48 @@ TEST_F(OneWayListTestSuite, addToTailTestFiveElements)
 	sut.printList();
 
 	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	EXPECT_STREQ(m_expectedOutput.c_str(), l_actualOutput.c_str());
 }
 
 TEST_F(OneWayListTestSuite, addToHeadTestOneElement)
 {
-	std::string l_expectedOutput = "34";
 	sut.addToHead(34);
 
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	m_expectedOutput = "34";
+	checkIfListContainsExepctedElements();
 }
 
 TEST_F(OneWayListTestSuite, addToHeadTestTwoElements)
 {
-	std::string l_expectedOutput = "58, 34";
 	sut.addToHead(34);
 	sut.addToHead(58);
 
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	m_expectedOutput = "58, 34";
+	checkIfListContainsExepctedElements();
 }
 
 TEST_F(OneWayListTestSuite, addToHeadTestFiveElements)
 {
-	std::string l_expectedOutput = "0, 1, 15, 58, 34";
-	sut.addToHead(34);
-	sut.addToHead(58);
-	sut.addToHead(15);
-	sut.addToHead(1);
-	sut.addToHead(0);
-
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	addFewElementsToList();
+	checkIfListContainsExepctedElements();
 }
 
 TEST_F(OneWayListTestSuite, getElementFromTail)
 {
-	std::string l_expectedOutput = "0, 1, 15, 58, 34";
-	sut.addToHead(34);
-	sut.addToHead(58);
-	sut.addToHead(15);
-	sut.addToHead(1);
-	sut.addToHead(0);
-
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
 
 	auto l_listElement = sut.getElementFromTail();
 	EXPECT_EQ(l_listElement, 34);
 
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	l_expectedOutput = "0, 1, 15, 58";
-	l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	m_expectedOutput = "0, 1, 15, 58";
+	checkIfListContainsExepctedElements();
 }
 
 TEST_F(OneWayListTestSuite, getFewElementsFromTail)
 {
-	std::string l_expectedOutput = "0, 1, 15, 58, 34";
-	sut.addToHead(34);
-	sut.addToHead(58);
-	sut.addToHead(15);
-	sut.addToHead(1);
-	sut.addToHead(0);
-
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
 
 	auto l_listElement = sut.getElementFromTail();
 	EXPECT_EQ(l_listElement, 34);
@@ -158,54 +144,26 @@ TEST_F(OneWayListTestSuite, getFewElementsFromTail)
 	l_listElement = sut.getElementFromTail();
 	EXPECT_EQ(l_listElement, 58);
 
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	l_expectedOutput = "0, 1, 15";
-	l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	m_expectedOutput = "0, 1, 15";
+	checkIfListContainsExepctedElements();
 }
 
 TEST_F(OneWayListTestSuite, getElementFromHead)
 {
-	std::string l_expectedOutput = "0, 1, 15, 58, 34";
-	sut.addToHead(34);
-	sut.addToHead(58);
-	sut.addToHead(15);
-	sut.addToHead(1);
-	sut.addToHead(0);
-
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
 
 	auto l_listElement = sut.getElementFromHead();
 	EXPECT_EQ(l_listElement, 0);
 
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	l_expectedOutput = "1, 15, 58, 34";
-	l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	m_expectedOutput = "1, 15, 58, 34";
+	checkIfListContainsExepctedElements();
 }
 
 TEST_F(OneWayListTestSuite, getFewElementsFromHead)
 {
-	std::string l_expectedOutput = "0, 1, 15, 58, 34";
-	sut.addToHead(34);
-	sut.addToHead(58);
-	sut.addToHead(15);
-	sut.addToHead(1);
-	sut.addToHead(0);
-
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	std::string l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
 
 	auto l_listElement = sut.getElementFromHead();
 	EXPECT_EQ(l_listElement, 0);
@@ -214,10 +172,82 @@ TEST_F(OneWayListTestSuite, getFewElementsFromHead)
 	l_listElement = sut.getElementFromHead();
 	EXPECT_EQ(l_listElement, 15);
 
-	testing::internal::CaptureStdout();
-	sut.printList();
-
-	l_expectedOutput = "58, 34";
-	l_actualOutput = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+	m_expectedOutput = "58, 34";
+	checkIfListContainsExepctedElements();
 }
+
+TEST_F(OneWayListTestSuite, getElementWithinRange)
+{
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
+
+	auto l_listElement = sut.getElement(3);
+	EXPECT_EQ(l_listElement, 58);
+
+	m_expectedOutput = "0, 1, 15, 34";
+	checkIfListContainsExepctedElements();
+}
+
+TEST_F(OneWayListTestSuite, getTwoElementsWithinRange)
+{
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
+
+	auto l_listElement = sut.getElement(3);
+	EXPECT_EQ(l_listElement, 58);
+	l_listElement = sut.getElement(2);
+	EXPECT_EQ(l_listElement, 15);
+
+	m_expectedOutput = "0, 1, 34";
+	checkIfListContainsExepctedElements();
+}
+
+TEST_F(OneWayListTestSuite, getFewElementsWithinRange)
+{
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
+
+	auto l_listElement = sut.getElement(3);
+	EXPECT_EQ(l_listElement, 58);
+	l_listElement = sut.getElement(2);
+	EXPECT_EQ(l_listElement, 15);
+	l_listElement = sut.getElement(2);
+	EXPECT_EQ(l_listElement, 34);
+
+	m_expectedOutput = "0, 1";
+	checkIfListContainsExepctedElements();
+}
+
+TEST_F(OneWayListTestSuite, getElementOutOfRange)
+{
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
+
+	EXPECT_EQ(sut.getElement(10), 34);
+
+	m_expectedOutput = "0, 1, 15, 58";
+	checkIfListContainsExepctedElements();
+}
+
+TEST_F(OneWayListTestSuite, getElementForFirstElementRange)
+{
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
+
+	EXPECT_EQ(sut.getElement(0), 0);
+
+	m_expectedOutput = "1, 15, 58, 34";
+	checkIfListContainsExepctedElements();
+}
+
+TEST_F(OneWayListTestSuite, getElementForLastElementRange)
+{
+	addFewElementsToList();
+	expectListContainsAllAddedElements();
+
+	EXPECT_EQ(sut.getElement(4), 34);
+
+	m_expectedOutput = "0, 1, 15, 58";
+	checkIfListContainsExepctedElements();
+}
+
