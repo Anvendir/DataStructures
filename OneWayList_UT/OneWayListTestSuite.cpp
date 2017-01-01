@@ -131,8 +131,93 @@ TEST_F(OneWayListTestSuite, getElementFromTail)
 
 	testing::internal::CaptureStdout();
 	sut.printList();
+
 	l_expectedOutput = "0, 1, 15, 58";
 	l_actualOutput = testing::internal::GetCapturedStdout();
 	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
 }
 
+TEST_F(OneWayListTestSuite, getFewElementsFromTail)
+{
+	std::string l_expectedOutput = "0, 1, 15, 58, 34";
+	sut.addToHead(34);
+	sut.addToHead(58);
+	sut.addToHead(15);
+	sut.addToHead(1);
+	sut.addToHead(0);
+
+	testing::internal::CaptureStdout();
+	sut.printList();
+
+	std::string l_actualOutput = testing::internal::GetCapturedStdout();
+	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+
+	auto l_listElement = sut.getElementFromTail();
+	EXPECT_EQ(l_listElement, 34);
+
+	l_listElement = sut.getElementFromTail();
+	EXPECT_EQ(l_listElement, 58);
+
+	testing::internal::CaptureStdout();
+	sut.printList();
+
+	l_expectedOutput = "0, 1, 15";
+	l_actualOutput = testing::internal::GetCapturedStdout();
+	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+}
+
+TEST_F(OneWayListTestSuite, getElementFromHead)
+{
+	std::string l_expectedOutput = "0, 1, 15, 58, 34";
+	sut.addToHead(34);
+	sut.addToHead(58);
+	sut.addToHead(15);
+	sut.addToHead(1);
+	sut.addToHead(0);
+
+	testing::internal::CaptureStdout();
+	sut.printList();
+
+	std::string l_actualOutput = testing::internal::GetCapturedStdout();
+	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+
+	auto l_listElement = sut.getElementFromHead();
+	EXPECT_EQ(l_listElement, 0);
+
+	testing::internal::CaptureStdout();
+	sut.printList();
+
+	l_expectedOutput = "1, 15, 58, 34";
+	l_actualOutput = testing::internal::GetCapturedStdout();
+	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+}
+
+TEST_F(OneWayListTestSuite, getFewElementsFromHead)
+{
+	std::string l_expectedOutput = "0, 1, 15, 58, 34";
+	sut.addToHead(34);
+	sut.addToHead(58);
+	sut.addToHead(15);
+	sut.addToHead(1);
+	sut.addToHead(0);
+
+	testing::internal::CaptureStdout();
+	sut.printList();
+
+	std::string l_actualOutput = testing::internal::GetCapturedStdout();
+	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+
+	auto l_listElement = sut.getElementFromHead();
+	EXPECT_EQ(l_listElement, 0);
+	l_listElement = sut.getElementFromHead();
+	EXPECT_EQ(l_listElement, 1);
+	l_listElement = sut.getElementFromHead();
+	EXPECT_EQ(l_listElement, 15);
+
+	testing::internal::CaptureStdout();
+	sut.printList();
+
+	l_expectedOutput = "58, 34";
+	l_actualOutput = testing::internal::GetCapturedStdout();
+	EXPECT_STREQ(l_expectedOutput.c_str(), l_actualOutput.c_str());
+}

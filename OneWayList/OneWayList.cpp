@@ -92,3 +92,10 @@ int OneWayList::getElementFromTail()
 	}
 	return l_elementFromTail;
 }
+
+int OneWayList::getElementFromHead()
+{
+	auto l_headElement = m_head->m_element;
+	m_head = m_head->m_nextElement;
+	return l_headElement;
+}

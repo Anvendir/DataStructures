@@ -15,6 +15,7 @@ public:
 	void addToTail(int p_element);
 	void addToHead(int p_element);
 	int getElementFromTail();
+	int getElementFromHead();
 
 private:
 	struct Node
