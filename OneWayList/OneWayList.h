@@ -19,6 +19,7 @@ public:
 	int getElement(int p_elementIndex);
 
 private:
+
 	struct Node
 	{
 		Node();
@@ -27,6 +28,8 @@ private:
 		int m_element;
 		Node* m_nextElement = nullptr;
 	};
+
+	Node* findListElement(int p_elementIndex);
 	Node* m_head;
 	Node* m_tail;
 };

@@ -108,15 +108,18 @@ int OneWayList::getElement(int p_elementIndex)
 	if (p_elementIndex == 0)
 		return getElementFromHead();
 
-	auto* l_temp = m_head;
-	for (auto l_counter = 0; l_counter < p_elementIndex; l_temp = l_temp->m_nextElement, l_counter++);
+	auto l_requestedElement = findListElement(p_elementIndex);
+	auto l_previousElement = findListElement(p_elementIndex-1);
+	l_previousElement->m_nextElement = l_requestedElement->m_nextElement;
 
-	auto l_requesteElement = l_temp->m_element;
-	auto l_nextElement = l_temp->m_nextElement;
+	return l_requestedElement->m_element;
+}
 
-	l_temp = m_head;
-	for (auto l_counter = 0; l_counter < p_elementIndex-1; l_temp = l_temp->m_nextElement, l_counter++);
-	l_temp->m_nextElement = l_nextElement;
+OneWayList::Node* OneWayList::findListElement(int p_elementIndex)
+{
+	Node* l_temp = m_head;
+	for (auto l_counter = 0; l_counter < p_elementIndex; l_counter++)
+		l_temp = l_temp->m_nextElement;
 
-	return l_requesteElement;
+	return l_temp;
 }
